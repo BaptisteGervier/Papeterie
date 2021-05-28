@@ -7,7 +7,7 @@ import fr.eni.papeterie.bo.Stylo;
 
 import java.sql.*;
 
-public class ArticleDAOjdbcImpl {
+public class ArticleDAOjdbcImpl implements ArticleDAO{
     private final String URL = Settings.getPropriete("url");
     private final String SELECT_BY_ID = "SELECT * FROM Articles WHERE idArticle=?";
     private final String SQL_DELETE = "DELETE FROM Articles WHERE idArticle=?";
@@ -18,10 +18,10 @@ public class ArticleDAOjdbcImpl {
             "(reference, marque,designation,prixUnitaire,qteStock,grammage,couleur,type" +
             "VALUES(?,?,?,?,?,?,?,?);";
 
-
+    @Override
     public void update(Article article) {
         try {
-            Connection connection = DriverManager.getConnection(this.URL);
+            Connection connection = JdbcTools.recupConnection();
             PreparedStatement etat = connection.prepareStatement(this.SQL_UPDATE);
             etat.setString(1, article.getReference());
             etat.setString(2, article.getMarque());
@@ -40,10 +40,10 @@ public class ArticleDAOjdbcImpl {
             throwables.printStackTrace();
         }
     }
-
+    @Override
     public void insert(Article article){
     try (
-            Connection connection = DriverManager.getConnection(this.URL);
+            Connection connection = JdbcTools.recupConnection();
          PreparedStatement etat = connection.prepareStatement(this.SQL_INSERT)
     ) {
         etat.setString(1, article.getReference());
@@ -68,11 +68,11 @@ public class ArticleDAOjdbcImpl {
         System.out.println(e.getMessage());
     }
 }
-
+    @Override
     public Article selectById(int id){
         Article article = null;
         try (
-            Connection connection = DriverManager.getConnection(this.URL);
+            Connection connection = JdbcTools.recupConnection();
             Statement etat = connection.createStatement()
         ){
             String sql = "SELECT idArticle, reference, marque, designation, prixUnitaire, qteStock, grammage, couleur" +
@@ -108,9 +108,9 @@ public class ArticleDAOjdbcImpl {
         }
         return article;
     }
-
+    @Override
     public void delete(int id){
-        try (Connection connection = DriverManager.getConnection(this.URL)){
+        try (Connection connection = JdbcTools.recupConnection()){
                 PreparedStatement reqPreparee = connection.prepareStatement(this.SQL_DELETE);
                 reqPreparee.setInt(1, id);
                 reqPreparee.executeUpdate();

@@ -12,7 +12,7 @@ public class AppliTestDAL {
 	public static void main(String[] args) {
 
 		//Déclaration et instanciation de la DAO
-		ArticleDAOjdbcImpl articleDAO = new ArticleDAOjdbcImpl();
+		ArticleDAO articleDAO = DAOFactory.getArticleDAO();
 
 		//Instanciation du jeu d'essai 
 		Article a1 = new Stylo( "Bic", "BBOrange","Bic bille Orange", 1.2f, 20, "bleu");
