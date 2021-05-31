@@ -6,6 +6,7 @@ import fr.eni.papeterie.bo.Ramette;
 import fr.eni.papeterie.bo.Stylo;
 
 import java.sql.*;
+import java.util.List;
 
 public class ArticleDAOjdbcImpl implements ArticleDAO{
     private final String URL = Settings.getPropriete("url");
@@ -109,13 +110,18 @@ public class ArticleDAOjdbcImpl implements ArticleDAO{
         return article;
     }
     @Override
-    public void delete(int id){
+    public void delete(int id) throws DALException{
         try (Connection connection = JdbcTools.recupConnection()){
                 PreparedStatement reqPreparee = connection.prepareStatement(this.SQL_DELETE);
                 reqPreparee.setInt(1, id);
                 reqPreparee.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new DALException("Erreur dans la methode delete().");
         }
+    }
+
+    @Override
+    public List<Article> selectAll(){
+        return null;
     }
 }

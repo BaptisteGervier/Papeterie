@@ -1,7 +1,7 @@
 package fr.eni.papeterie.bo;
 
 
-public abstract class Article {
+public class Article {
     //Attributs d'instance
     private Integer idArticle;
     private String reference;
