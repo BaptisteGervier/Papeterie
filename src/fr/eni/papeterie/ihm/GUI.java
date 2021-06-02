@@ -7,32 +7,20 @@ public class GUI extends JFrame {
     private JPanel panneauPrincipal;
     private JPanel panneauSecondaire;
     private JPanel panneauTrois;
-    private JLabel labelRef;
-    private JLabel labelDes;
-    private JLabel labelMar;
-    private JLabel labelSto;
-    private JLabel labelPrix;
-    private JLabel labelType;
-    private JLabel labelGram;
-    private JLabel labelCouleur;
-    private JTextField textFieldRef;
-    private JTextField textFieldDes;
-    private JTextField textFieldMar;
-    private JTextField textFieldSto;
-    private JTextField textFieldPrix;
-    private JRadioButton radioButton;
-    private JRadioButton radioButton2;
-    private JCheckBox checkBox;
-    private JCheckBox checkBox2;
+    private JPanel panneauDuBas;
+    private JLabel labelRef, labelDes, labelMar, labelSto, labelPrix, labelType, labelGram, labelCouleur;
+    private JTextField textFieldRef, textFieldDes, textFieldMar, textFieldSto, textFieldPrix;
+    private JRadioButton radioButton, radioButton2;
+    private JCheckBox checkBox, checkBox2 ;
     private JComboBox comboBox;
+    private JButton btnPrecedent, btnNouveau, btnEnregistrer, btnSupprimer, btnSuivant;
 
     public GUI(){
-        this.setTitle("");
-        this.setSize(500, 500);
+        this.setTitle("Papeterie");
+        this.setSize(600, 600);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(getPanneauPrincipal());
-        String laf = "javax.swing.plaf.metal.MetalLookAndFeel";
         this.pack();
         this.setVisible(true);
     }
@@ -66,7 +54,7 @@ public class GUI extends JFrame {
             gbc.gridy = 6;
             gbc.gridx = 0;
             panneauPrincipal.add(getLabelGram(), gbc);
-            gbc.gridy = 9;
+            gbc.gridy = 7;
             gbc.gridx = 0;
             panneauPrincipal.add(getLabelCouleur(), gbc);
 
@@ -96,9 +84,14 @@ public class GUI extends JFrame {
             panneauPrincipal.add(getPanneauTrois(), gbc);
 
             // insertion de la comboBox de couleur
-            gbc.gridy = 9;
+            gbc.gridy = 7;
             gbc.gridx = 1;
             panneauPrincipal.add(getComboBox(), gbc);
+
+            gbc.gridy = 8;
+            gbc.gridx = 0;
+            gbc.gridwidth = 2;
+            panneauPrincipal.add(getPanneauDuBas(), gbc);
 
         }
         return panneauPrincipal;
@@ -107,17 +100,12 @@ public class GUI extends JFrame {
         public JPanel getPanneauSecondaire() {
             if (panneauSecondaire == null) {
                 panneauSecondaire = new JPanel();
-                panneauSecondaire.setLayout(new GridBagLayout());
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.insets = new Insets(5, 5, 5, 5);
-
-                // insertion du RadioButton
-                gbc.gridy = 0;
-                gbc.gridx = 1;
-                panneauSecondaire.add(getRadioButton(), gbc);
-                gbc.gridy = 2;
-                gbc.gridx = 1;
-                panneauSecondaire.add(getRadioButton2(), gbc);
+                panneauSecondaire.setLayout(new BoxLayout(panneauSecondaire, BoxLayout.Y_AXIS));
+                panneauSecondaire.add(getRadioButton()) ;
+                panneauSecondaire.add(getRadioButton2());
+                ButtonGroup bg = new ButtonGroup();
+                bg.add(getRadioButton());
+                bg.add(getRadioButton2());
             }
             return panneauSecondaire;
         }
@@ -125,20 +113,27 @@ public class GUI extends JFrame {
     public JPanel getPanneauTrois() {
         if (panneauTrois == null) {
             panneauTrois = new JPanel();
-            panneauTrois.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(5, 5, 5, 5);
-            // insertion des checkBox
-            gbc.gridy = 0;
-            gbc.gridx = 1;
-            panneauTrois.add(getCheckBox(), gbc);
-            gbc.gridy = 2;
-            gbc.gridx = 1;
-            panneauTrois.add(getCheckBox2(), gbc);
+            panneauTrois.setLayout(new BoxLayout(panneauTrois, BoxLayout.Y_AXIS));
+            panneauTrois.add(getCheckBox()) ;
+            panneauTrois.add(getCheckBox2());
+            ButtonGroup bg = new ButtonGroup();
+            bg.add(getCheckBox());
+            bg.add(getCheckBox2());
         }
         return panneauTrois;
     }
 
+    public JPanel getPanneauDuBas() {
+        if (panneauDuBas == null) {
+            panneauDuBas = new JPanel();
+            panneauDuBas.add(getBtnPrecedent());
+            panneauDuBas.add(getBtnNouveau());
+            panneauDuBas.add(getBtnEnregistrer());
+            panneauDuBas.add(getBtnSupprimer());
+            panneauDuBas.add(getBtnSuivant());
+        }
+        return panneauDuBas;
+    }
 
     // singleton des textes
     public JLabel getLabelRef(){
@@ -273,11 +268,45 @@ public class GUI extends JFrame {
     public JComboBox getComboBox(){
         if (comboBox == null){
             comboBox = new JComboBox<>();
-            comboBox.setPreferredSize(new Dimension(100,24));
+            for (Couleur couleur : Couleur.values()){
+                comboBox.addItem(couleur);
+            }
         }
         return comboBox;
     }
+//singleton des boutons
+    public JButton getBtnPrecedent(){
+        if (btnPrecedent == null){
+            btnPrecedent = new JButton(new ImageIcon("image/Back24.gif"));
+        }
+        return btnPrecedent;
+    }
+
+    public JButton getBtnNouveau(){
+        if (btnNouveau == null){
+            btnNouveau = new JButton(new ImageIcon("image/New24.gif"));
+        }
+        return btnNouveau;
+    }
+
+    public JButton getBtnEnregistrer(){
+        if (btnEnregistrer == null){
+            btnEnregistrer = new JButton(new ImageIcon("image/Save24.gif"));
+        }
+        return btnEnregistrer;
+    }
+
+    public JButton getBtnSupprimer(){
+        if (btnSupprimer == null){
+            btnSupprimer = new JButton(new ImageIcon("image/Delete24.gif"));
+        }
+        return btnSupprimer;
+    }
+
+    public JButton getBtnSuivant(){
+        if (btnSuivant == null){
+            btnSuivant = new JButton(new ImageIcon("image/Forward24.gif"));
+        }
+        return btnSuivant;
+    }
 }
-
-
-//flowLayout
